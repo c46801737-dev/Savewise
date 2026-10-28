@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SaveWise — Track, Understand, Save</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">SAVEWISE</span>
+      <h1 id="page-title" data-i18n="nav.add">Add</h1>
+    </div>
+    <div class="topbar-actions">
+      <button id="lang-btn" class="lang-btn">中文</button>
+      <button id="gear-btn" class="lang-btn gear" data-i18n-aria="data.title" aria-label="Your data">⚙</button>
+    </div>
+  </header>
+
+  <main id="content">
+
+    <!-- ========== View 1: Add ========== -->
+    <section id="view-entry" class="view active">
+
+      <div class="segmented">
+        <button class="seg active" data-type="expense" data-i18n="entry.expense">Expense</button>
+        <button class="seg" data-type="income" data-i18n="entry.income">Income</button>
+        <button class="seg" data-type="savings" data-i18n="entry.savings">To savings</button>
+      </div>
+
+      <div class="amount-box">
+        <span class="currency">¥</span>
+        <input id="amount" type="number" inputmode="decimal" placeholder="0.00" step="0.01" min="0">
+      </div>
+
+      <div class="field" id="cat-field">
+        <div class="field-head">
+          <label data-i18n="entry.category">Category</label>
+        </div>
+        <div id="category-grid" class="category-grid"></div>
+      </div>
+
+      <div class="field">
+        <label for="date" data-i18n="entry.date">Date</label>
+        <input id="date" type="date">
+      </div>
+
+      <div class="field">
+        <label for="note" data-i18n="entry.note">Note (optional)</label>
+        <input id="note" type="text" maxlength="40" data-i18n-ph="entry.notePh" placeholder="e.g. hotpot with roommates">
+      </div>
+
+      <div id="fixed-row" class="field switch-row">
+        <div>
+          <label for="is-fixed" data-i18n="entry.fixed">Essential spending</label>
+          <p class="sub" data-i18n="entry.fixedSub">Canteen, phone bill, medicine — money you cannot avoid</p>
+        </div>
+        <label class="switch">
+          <input id="is-fixed" type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <p id="savings-hint" class="save-tip hidden" data-i18n="entry.savingsHint">
+        Moving money into savings is not spending. It only counts towards your monthly rule.
+      </p>
+
+      <button id="save-btn" class="primary-btn" data-i18n="entry.save">Save this entry</button>
+      <p id="save-tip" class="save-tip"></p>
+    </section>
+
+    <!-- ========== View 2: Records ========== -->
+    <section id="view-list" class="view">
+      <div class="month-nav">
+        <button id="prev-month" class="nav-btn">‹</button>
+        <span id="current-month">—</span>
+        <button id="next-month" class="nav-btn">›</button>
+      </div>
+
+      <div class="summary-card">
+        <span class="summary-label" data-i18n="list.balance">Left this month</span>
+        <span id="month-balance" class="summary-value">¥0.00</span>
+        <div class="summary-split">
+          <div>
+            <span class="summary-label" data-i18n="list.spent">Spent</span>
+            <span id="month-expense" class="summary-sub expense">¥0.00</span>
+          </div>
+          <div>
+            <span class="summary-label" data-i18n="list.received">Received</span>
+            <span id="month-income" class="summary-sub income">¥0.00</span>
+          </div>
+          <div>
+            <span class="summary-label" data-i18n="list.entries">Entries</span>
+            <span id="month-count" class="summary-sub">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="list-container" class="list-container"></div>
+    </section>
+
+    <!-- ========== View 3: Analysis ========== -->
+    <section id="view-analysis" class="view">
+
+      <div id="stat-block"></div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2 data-i18n="sav.title">Savings</h2>
+          <span class="tag" data-i18n="sav.tag">your own rule</span>
+        </div>
+        <div id="savings-block"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2 data-i18n="method.title">How the numbers work</h2></div>
+        <div class="formula">
+          <div class="formula-row">
+            <span data-i18n="method.income">Income recorded</span><b id="f-income">—</b>
+          </div>
+          <div class="formula-row">
+            <span data-i18n="method.essential">Essential spending</span><b id="f-essential">—</b>
+          </div>
+          <div class="formula-row strong">
+            <span data-i18n="method.free">Money you can actually choose</span><b id="f-free">—</b>
+          </div>
+          <div class="formula-row">
+            <span data-i18n="method.needed">Your monthly savings rule</span><b id="f-needed">—</b>
+          </div>
+          <div class="formula-row strong">
+            <span data-i18n="method.cap">Spending cap for flexible items</span><b id="f-cap">—</b>
+          </div>
+        </div>
+        <p class="card-desc small" data-i18n="method.note">
+          These five figures are pure arithmetic — done by the app, not by the AI.
+          The AI is only asked one question: where inside that cap should the money come from?
+        </p>
+      </div>
+    </section>
+
+    <!-- ========== View 4: AI advice ========== -->
+    <section id="view-ai" class="view">
+
+      <div class="card">
+        <div class="card-head">
+          <h2 data-i18n="ai.title">Ask the AI</h2>
+          <span class="tag" data-i18n="ai.tag">summarised first</span>
+        </div>
+        <p class="card-desc" data-i18n="ai.desc">
+          SaveWise turns your raw entries into a clean spending snapshot — no shop names, no personal notes.
+          Paste it into any AI chat. That is what makes the advice specific instead of generic.
+        </p>
+        <button id="gen-prompt" class="primary-btn" data-i18n="ai.generate">Build the brief</button>
+        <div id="prompt-box" class="prompt-box hidden">
+          <div class="prompt-head">
+            <span data-i18n="ai.copyHint">Copy this and paste it into any AI chat</span>
+            <button id="copy-prompt" class="mini-btn" data-i18n="ai.copy">Copy</button>
+          </div>
+          <pre id="prompt-text"></pre>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2 data-i18n="note.title">Bring the answer back</h2></div>
+        <p class="card-desc" data-i18n="note.desc">
+          Paste what the AI said and keep it with the month. Chat windows forget; your ledger does not.
+        </p>
+        <textarea id="note-text" class="note-area" rows="7" data-i18n-ph="note.ph"
+                  placeholder="Paste the AI's advice here…"></textarea>
+        <div class="btn-row note-row">
+          <button id="save-note" class="ghost-btn" data-i18n="note.save">Save for this month</button>
+          <span id="note-status" class="note-status"></span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <nav class="tabbar">
+    <button class="tab active" data-view="entry">
+      <span class="tab-icon">＋</span><span data-i18n="nav.add">Add</span>
+    </button>
+    <button class="tab" data-view="list">
+      <span class="tab-icon">≡</span><span data-i18n="nav.records">Records</span>
+    </button>
+    <button class="tab" data-view="analysis">
+      <span class="tab-icon">◔</span><span data-i18n="nav.insights">Insights</span>
+    </button>
+    <button class="tab" data-view="ai">
+      <span class="tab-icon tiny">AI</span><span data-i18n="nav.ai">AI advice</span>
+    </button>
+  </nav>
+
+</div>
+
+<!-- ========== 数据管理弹层 ========== -->
+<div id="gear-overlay" class="overlay hidden">
+  <div class="sheet" role="dialog" aria-modal="true">
+    <div class="sheet-head">
+      <h2 data-i18n="data.title">Your data</h2>
+      <button id="gear-close" class="sheet-close" aria-label="Close">×</button>
+    </div>
+    <p class="card-desc" id="data-stats">—</p>
+    <button id="load-sample" class="ghost-btn btn-full" data-i18n="set.sample">Load sample data</button>
+    <div class="btn-row">
+      <button id="export-json" class="ghost-btn" data-i18n="data.export">Export backup</button>
+      <button id="import-json" class="ghost-btn" data-i18n="data.import">Restore backup</button>
+    </div>
+    <button id="clear-data" class="danger-btn btn-full" data-i18n="data.clear">Clear all</button>
+    <input id="import-file" type="file" accept=".json,application/json" class="hidden">
+    <p class="card-desc small" data-i18n="data.restoreHint">
+      Restoring adds the backup’s entries to what is already here and skips duplicates. It never deletes anything.
+    </p>
+    <p class="card-desc small" data-i18n="data.privacy">
+      Nothing leaves this browser. There is no account, no server, and no upload.
+    </p>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
+
