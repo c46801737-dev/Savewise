@@ -6,9 +6,8 @@ A small bilingual (English/Chinese) budgeting app for students. It records incom
 
 Open `index.html` in a browser. No build step or server is required.
 
-## Deploy with Cloudflare Pages
+## Deploy with Cloudflare Workers
 
-This is a static site. Set the Pages build command to blank and the output directory to `.`. The Wrangler Pages configuration in this repository also points to the repository root.
+This is a static site served by a Cloudflare Worker. There is no build step; `wrangler.jsonc` points the Worker at the site files in the repository root. The `.assetsignore` file keeps project and deployment configuration files out of the public assets.
 
 Data stays in the browser where it was entered; it is not synchronized between devices.
-
